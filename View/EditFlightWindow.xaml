@@ -1,0 +1,82 @@
+﻿<Window x:Class="Airport.View.EditFlightWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Airport.View"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Редактирование рейса" Height="450" Width="800">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Width="200" DataContext="{Binding SelectedFlight}">
+            <TextBlock Text="ID Рейса"/>
+            <TextBox Text="{Binding FlightID}"/>
+            <TextBlock Text="Дата"/>
+            <!--<DatePicker SelectedDate="{x:Static sys:DateTime.Now}" IsTodayHighlighted="True"/>-->
+            <DatePicker SelectedDate="{Binding Date}" IsTodayHighlighted="True"/>
+            <TextBlock Text="Вылет"/>
+            <TextBox Text="{Binding Departure}"/>
+            <TextBlock Text="Прилет"/>
+            <TextBox Text="{Binding Arrival}"/>
+            <TextBlock Text="Посадка"/>
+            <TextBox Text="{Binding BoardingTime, StringFormat=hh\\:mm}"/>
+            <TextBlock Text="Конец посадки"/>
+            <TextBox Text="{Binding LastCallTime, StringFormat=hh\\:mm}"/>
+            <TextBlock Text="Время вылета"/>
+            <TextBox Text="{Binding OutTime, StringFormat=hh\\:mm}"/>
+            <TextBlock Text="Время прилета"/>
+            <TextBox Text="{Binding ArrivalTime, StringFormat=hh\\:mm}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Width="200">
+            <StackPanel>
+                <TextBlock Text="Текущий самолёт"/>
+                <TextBlock Text="{Binding SelectedFlight.Aircraft.AircraftID, StringFormat=ID:\ {0}}"/>
+                <TextBlock Text="{Binding SelectedFlight.Aircraft.Name, StringFormat=Название:\ {0}}"/>
+                <TextBlock Text="{Binding SelectedFlight.Aircraft.TailNumber, StringFormat=Бортовой\ номер:\ {0}}"/>
+                <TextBlock Text="{Binding SelectedFlight.Aircraft.MaximumCapacity, StringFormat=Доступные\ места:\ {0}}"/>
+                <TextBlock/>
+            </StackPanel>
+            <TextBlock Text="Выбрать самолёт"/>
+            <ComboBox ItemsSource="{Binding Aircrafts}" SelectedItem="{Binding SelectedFromComboBoxAircraft}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding AircraftID, StringFormat=ID:{0}\,}"></TextBlock>
+                            <TextBlock Text=" "></TextBlock>
+                            <TextBlock Text="{Binding Path=Name, StringFormat=Название:{0}\,}"></TextBlock>
+                            <TextBlock Text=" "></TextBlock>
+                            <TextBlock Text="{Binding Path=TailNumber, StringFormat=Бортовой\ номер:{0}}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="Доступные места"/>
+            <TextBox Text="{Binding SelectedFromComboBoxAircraft.MaximumCapacity}"/>
+            <!--mode way?-->
+            <TextBlock Text="Проданные места"/>
+            <TextBox Text="{Binding SelectedFlight.SoldSeats}"/>
+            <TextBlock/>
+            <!--на время-->
+            <StackPanel DataContext="{Binding SelectedFlight.Price}">
+                <!--binding-->
+                <TextBlock Text="Цены:" HorizontalAlignment="Center"/>
+                <TextBlock Text="Первый класс:"/>
+                <TextBox Text="{Binding Path=FirstClass}"></TextBox>
+                <TextBlock Text="Бизнес класс:"/>
+                <TextBox Text="{Binding Path=BusinessClass}"></TextBox>
+                <TextBlock Text="Эконом класс:"/>
+                <TextBox Text="{Binding Path=EconomyClass}"></TextBox>
+            </StackPanel>
+
+        </StackPanel>
+        <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Сохранить" Command="{Binding EditFlight}"></Button>
+    </Grid>
+</Window>
